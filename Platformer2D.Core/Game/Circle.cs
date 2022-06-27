@@ -1,13 +1,14 @@
 ﻿#region File Description
+
 //-----------------------------------------------------------------------------
 // Circle.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
-using System;
 using Microsoft.Xna.Framework;
 
 namespace Platformer2D
@@ -15,7 +16,7 @@ namespace Platformer2D
     /// <summary>
     /// Represents a 2D circle.
     /// </summary>
-    struct Circle
+    internal struct Circle
     {
         /// <summary>
         /// Center position of the circle.

@@ -1,12 +1,12 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
+using System;
 
 namespace Platformer2D
 {
-    class VirtualGamePad
+    internal class VirtualGamePad
     {
         private readonly Vector2 baseScreenSize;
         private Matrix globalTransformation;
@@ -58,7 +58,7 @@ namespace Platformer2D
         {
             //Work out what buttons are pressed based on the touchState
             Buttons buttonsPressed = 0;
-            
+
             foreach (var touch in touchState)
             {
                 if (touch.State == TouchLocationState.Moved || touch.State == TouchLocationState.Pressed)
@@ -99,7 +99,7 @@ namespace Platformer2D
             buttonsPressed |= (gpButtons.RightStick == ButtonState.Pressed ? Buttons.RightStick : 0);
 
             var buttons = new GamePadButtons(buttonsPressed);
-            
+
             return new GamePadState(gpState.ThumbSticks, gpState.Triggers, buttons, gpState.DPad);
         }
     }

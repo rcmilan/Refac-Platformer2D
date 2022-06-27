@@ -1,14 +1,16 @@
 ﻿#region File Description
+
 //-----------------------------------------------------------------------------
 // RectangleExtensions.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
-using System;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace Platformer2D
 {

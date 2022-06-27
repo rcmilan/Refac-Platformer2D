@@ -1,13 +1,14 @@
 ﻿#region File Description
+
 //-----------------------------------------------------------------------------
 // Animation.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
-using System;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Platformer2D
@@ -20,7 +21,7 @@ namespace Platformer2D
     /// as wide as each animation is tall. The number of frames in the
     /// animation are inferred from this.
     /// </remarks>
-    class Animation
+    internal class Animation
     {
         /// <summary>
         /// All frames in the animation arranged horizontally.
@@ -29,7 +30,8 @@ namespace Platformer2D
         {
             get { return texture; }
         }
-        Texture2D texture;
+
+        private Texture2D texture;
 
         /// <summary>
         /// Duration of time to show each frame.
@@ -38,7 +40,8 @@ namespace Platformer2D
         {
             get { return frameTime; }
         }
-        float frameTime;
+
+        private float frameTime;
 
         /// <summary>
         /// When the end of the animation is reached, should it
@@ -48,7 +51,8 @@ namespace Platformer2D
         {
             get { return isLooping; }
         }
-        bool isLooping;
+
+        private bool isLooping;
 
         /// <summary>
         /// Gets the number of frames in the animation.
@@ -78,7 +82,7 @@ namespace Platformer2D
 
         /// <summary>
         /// Constructors a new animation.
-        /// </summary>        
+        /// </summary>
         public Animation(Texture2D texture, float frameTime, bool isLooping)
         {
             this.texture = texture;

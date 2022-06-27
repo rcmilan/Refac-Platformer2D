@@ -1,22 +1,24 @@
 ﻿#region File Description
+
 //-----------------------------------------------------------------------------
 // AnimationPlayer.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace Platformer2D
 {
     /// <summary>
     /// Controls playback of an Animation.
     /// </summary>
-    struct AnimationPlayer
+    internal struct AnimationPlayer
     {
         /// <summary>
         /// Gets the animation which is currently playing.
@@ -25,7 +27,8 @@ namespace Platformer2D
         {
             get { return animation; }
         }
-        Animation animation;
+
+        private Animation animation;
 
         /// <summary>
         /// Gets the index of the current frame in the animation.
@@ -34,7 +37,8 @@ namespace Platformer2D
         {
             get { return frameIndex; }
         }
-        int frameIndex;
+
+        private int frameIndex;
 
         /// <summary>
         /// The amount of time in seconds that the current frame has been shown for.

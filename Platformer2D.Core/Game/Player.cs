@@ -1,27 +1,31 @@
 #region File Description
+
 //-----------------------------------------------------------------------------
 // Player.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Platformer2D.Core.Interfaces;
+using System;
 
 namespace Platformer2D
 {
     /// <summary>
     /// Our fearless adventurer!
     /// </summary>
-    class Player : Core.Interfaces.IDrawable
+    internal class Player : IEntity
     {
         // Animations
         private Animation idleAnimation;
+
         private Animation runAnimation;
         private Animation jumpAnimation;
         private Animation celebrateAnimation;
@@ -31,6 +35,7 @@ namespace Platformer2D
 
         // Sounds
         private SoundEffect killedSound;
+
         private SoundEffect jumpSound;
         private SoundEffect fallSound;
 
@@ -38,13 +43,15 @@ namespace Platformer2D
         {
             get { return level; }
         }
-        Level level;
+
+        private Level level;
 
         public bool IsAlive
         {
             get { return isAlive; }
         }
-        bool isAlive;
+
+        private bool isAlive;
 
         // Physics state
         public Vector2 Position
@@ -52,7 +59,8 @@ namespace Platformer2D
             get { return position; }
             set { position = value; }
         }
-        Vector2 position;
+
+        private Vector2 position;
 
         private float previousBottom;
 
@@ -61,23 +69,27 @@ namespace Platformer2D
             get { return velocity; }
             set { velocity = value; }
         }
-        Vector2 velocity;
+
+        private Vector2 velocity;
 
         // Constants for controlling horizontal movement
         private const float MoveAcceleration = 13000.0f;
+
         private const float MaxMoveSpeed = 1750.0f;
         private const float GroundDragFactor = 0.48f;
         private const float AirDragFactor = 0.58f;
 
         // Constants for controlling vertical movement
         private const float MaxJumpTime = 0.35f;
+
         private const float JumpLaunchVelocity = -3500.0f;
         private const float GravityAcceleration = 3400.0f;
         private const float MaxFallSpeed = 550.0f;
-        private const float JumpControlPower = 0.14f; 
+        private const float JumpControlPower = 0.14f;
 
         // Input configuration
         private const float MoveStickScale = 1.0f;
+
         private const float AccelerometerScale = 1.5f;
         private const Buttons JumpButton = Buttons.A;
 
@@ -88,7 +100,8 @@ namespace Platformer2D
         {
             get { return isOnGround; }
         }
-        bool isOnGround;
+
+        private bool isOnGround;
 
         /// <summary>
         /// Current user movement input.
@@ -97,10 +110,12 @@ namespace Platformer2D
 
         // Jumping state
         private bool isJumping;
+
         private bool wasJumping;
         private float jumpTime;
 
         private Rectangle localBounds;
+
         /// <summary>
         /// Gets a rectangle which bounds this player in world space.
         /// </summary>
@@ -139,14 +154,14 @@ namespace Platformer2D
             celebrateAnimation = new Animation(Level.Content.Load<Texture2D>("Sprites/Player/Celebrate"), 0.1f, false);
             dieAnimation = new Animation(Level.Content.Load<Texture2D>("Sprites/Player/Die"), 0.1f, false);
 
-            // Calculate bounds within texture size.            
+            // Calculate bounds within texture size.
             int width = (int)(idleAnimation.FrameWidth * 0.4);
             int left = (idleAnimation.FrameWidth - width) / 2;
             int height = (int)(idleAnimation.FrameHeight * 0.8);
             int top = idleAnimation.FrameHeight - height;
             localBounds = new Rectangle(left, top, width, height);
 
-            // Load sounds.            
+            // Load sounds.
             killedSound = Level.Content.Load<SoundEffect>("Sounds/PlayerKilled");
             jumpSound = Level.Content.Load<SoundEffect>("Sounds/PlayerJump");
             fallSound = Level.Content.Load<SoundEffect>("Sounds/PlayerFall");
@@ -172,14 +187,9 @@ namespace Platformer2D
         /// once per frame. We also pass the game's orientation because when using the accelerometer,
         /// we need to reverse our motion when the orientation is in the LandscapeRight orientation.
         /// </remarks>
-        public void Update(
-            GameTime gameTime, 
-            KeyboardState keyboardState, 
-            GamePadState gamePadState, 
-            AccelerometerState accelState,
-            DisplayOrientation orientation)
+        public void Update(GameTime gameTime, KeyboardState? keyboardState = null, GamePadState? gamePadState = null, AccelerometerState? accelState = null, DisplayOrientation? orientation = null)
         {
-            GetInput(keyboardState, gamePadState, accelState, orientation);
+            GetInput(keyboardState.Value, gamePadState.Value, accelState.Value, orientation.Value);
 
             ApplyPhysics(gameTime);
 
@@ -204,9 +214,9 @@ namespace Platformer2D
         /// Gets player horizontal movement and jump commands from input.
         /// </summary>
         private void GetInput(
-            KeyboardState keyboardState, 
+            KeyboardState keyboardState,
             GamePadState gamePadState,
-            AccelerometerState accelState, 
+            AccelerometerState accelState,
             DisplayOrientation orientation)
         {
             // Get analog horizontal movement.
@@ -271,7 +281,7 @@ namespace Platformer2D
             else
                 velocity.X *= AirDragFactor;
 
-            // Prevent the player from running faster than his top speed.            
+            // Prevent the player from running faster than his top speed.
             velocity.X = MathHelper.Clamp(velocity.X, -MaxMoveSpeed, MaxMoveSpeed);
 
             // Apply velocity.

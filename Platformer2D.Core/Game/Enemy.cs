@@ -1,22 +1,26 @@
 ﻿#region File Description
+
 //-----------------------------------------------------------------------------
 // Enemy.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Platformer2D.Core.Interfaces;
+using System;
 
 namespace Platformer2D
 {
     /// <summary>
     /// Facing direction along the X axis.
     /// </summary>
-    enum FaceDirection
+    internal enum FaceDirection
     {
         Left = -1,
         Right = 1,
@@ -25,13 +29,14 @@ namespace Platformer2D
     /// <summary>
     /// A monster who is impeding the progress of our fearless adventurer.
     /// </summary>
-    class Enemy : Core.Interfaces.IDrawable
+    internal class Enemy : IEntity
     {
         public Level Level
         {
             get { return level; }
         }
-        Level level;
+
+        private Level level;
 
         /// <summary>
         /// Position in world space of the bottom center of this enemy.
@@ -40,9 +45,11 @@ namespace Platformer2D
         {
             get { return position; }
         }
-        Vector2 position;
+
+        private Vector2 position;
 
         private Rectangle localBounds;
+
         /// <summary>
         /// Gets a rectangle which bounds this enemy in world space.
         /// </summary>
@@ -59,6 +66,7 @@ namespace Platformer2D
 
         // Animations
         private Animation runAnimation;
+
         private Animation idleAnimation;
         private AnimationPlayer sprite;
 
@@ -112,11 +120,10 @@ namespace Platformer2D
             localBounds = new Rectangle(left, top, width, height);
         }
 
-
         /// <summary>
         /// Paces back and forth along a platform, waiting at either end.
         /// </summary>
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, KeyboardState? keyboardState = null, GamePadState? gamePadState = null, AccelerometerState? accelState = null, DisplayOrientation? orientation = null)
         {
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -169,7 +176,6 @@ namespace Platformer2D
             {
                 sprite.PlayAnimation(runAnimation);
             }
-
 
             // Draw facing the way the enemy is moving.
             SpriteEffects flip = direction > 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;

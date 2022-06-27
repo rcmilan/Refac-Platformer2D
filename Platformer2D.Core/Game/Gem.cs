@@ -1,23 +1,27 @@
 ﻿#region File Description
+
 //-----------------------------------------------------------------------------
 // Gem.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
-using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Platformer2D.Core.Interfaces;
+using System;
 
 namespace Platformer2D
 {
     /// <summary>
     /// A valuable item the player can collect.
     /// </summary>
-    class Gem : Core.Interfaces.IDrawable
+    internal class Gem : IEntity
     {
         private Texture2D texture;
         private Vector2 origin;
@@ -28,13 +32,15 @@ namespace Platformer2D
 
         // The gem is animated from a base position along the Y axis.
         private Vector2 basePosition;
+
         private float bounce;
 
         public Level Level
         {
             get { return level; }
         }
-        Level level;
+
+        private Level level;
 
         /// <summary>
         /// Gets the current position of this gem in world space.
@@ -82,7 +88,7 @@ namespace Platformer2D
         /// <summary>
         /// Bounces up and down in the air to entice players to collect them.
         /// </summary>
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, KeyboardState? keyboardState = null, GamePadState? gamePadState = null, AccelerometerState? accelState = null, DisplayOrientation? orientation = null)
         {
             // Bounce control constants
             const float BounceHeight = 0.18f;
@@ -90,7 +96,7 @@ namespace Platformer2D
             const float BounceSync = -0.75f;
 
             // Bounce along a sine curve over time.
-            // Include the X coordinate so that neighboring gems bounce in a nice wave pattern.            
+            // Include the X coordinate so that neighboring gems bounce in a nice wave pattern.
             double t = gameTime.TotalGameTime.TotalSeconds * BounceRate + Position.X * BounceSync;
             bounce = (float)Math.Sin(t) * BounceHeight * texture.Height;
         }

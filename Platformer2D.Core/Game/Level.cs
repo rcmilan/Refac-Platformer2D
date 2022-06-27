@@ -1,20 +1,23 @@
 ﻿#region File Description
+
 //-----------------------------------------------------------------------------
 // Level.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
-using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Audio;
-using System.IO;
 using Microsoft.Xna.Framework.Input;
+using Platformer2D.Core.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Platformer2D
 {
@@ -23,11 +26,13 @@ namespace Platformer2D
     /// The level owns the player and controls the game's win and lose
     /// conditions as well as scoring.
     /// </summary>
-    class Level : IDisposable
+    internal class Level : IDisposable
     {
         // Physical structure of the level.
         private Tile[,] tiles;
+
         private Texture2D[] layers;
+
         // The layer which entities are drawn on top of.
         private const int EntityLayer = 2;
 
@@ -36,13 +41,15 @@ namespace Platformer2D
         {
             get { return player; }
         }
-        Player player;
 
-        private List<Gem> gems = new List<Gem>();
-        private List<Enemy> enemies = new List<Enemy>();
+        private Player player;
 
-        // Key locations in the level.        
+        private List<IEntity> gems = new List<IEntity>();
+        private List<IEntity> enemies = new List<IEntity>();
+
+        // Key locations in the level.
         private Vector2 start;
+
         private Point exit = InvalidPosition;
         private static readonly Point InvalidPosition = new Point(-1, -1);
 
@@ -53,28 +60,32 @@ namespace Platformer2D
         {
             get { return score; }
         }
-        int score;
+
+        private int score;
 
         public bool ReachedExit
         {
             get { return reachedExit; }
         }
-        bool reachedExit;
+
+        private bool reachedExit;
 
         public TimeSpan TimeRemaining
         {
             get { return timeRemaining; }
         }
-        TimeSpan timeRemaining;
+
+        private TimeSpan timeRemaining;
 
         private const int PointsPerSecond = 5;
 
-        // Level content.        
+        // Level content.
         public ContentManager Content
         {
             get { return content; }
         }
-        ContentManager content;
+
+        private ContentManager content;
 
         private SoundEffect exitReachedSound;
 
@@ -157,7 +168,6 @@ namespace Platformer2D
                 throw new NotSupportedException("A level must have a starting point.");
             if (exit == InvalidPosition)
                 throw new NotSupportedException("A level must have an exit.");
-
         }
 
         /// <summary>
@@ -197,10 +207,13 @@ namespace Platformer2D
                 // Various enemies
                 case 'A':
                     return LoadEnemyTile(x, y, "MonsterA");
+
                 case 'B':
                     return LoadEnemyTile(x, y, "MonsterB");
+
                 case 'C':
                     return LoadEnemyTile(x, y, "MonsterC");
+
                 case 'D':
                     return LoadEnemyTile(x, y, "MonsterD");
 
@@ -242,7 +255,6 @@ namespace Platformer2D
             return new Tile(Content.Load<Texture2D>("Tiles/" + name), collision);
         }
 
-
         /// <summary>
         /// Loads a tile with a random appearance.
         /// </summary>
@@ -258,7 +270,6 @@ namespace Platformer2D
             int index = random.Next(variationCount);
             return LoadTile(baseName + index, collision);
         }
-
 
         /// <summary>
         /// Instantiates a player, puts him in the level, and remembers where to put him when he is resurrected.
@@ -341,7 +352,7 @@ namespace Platformer2D
 
         /// <summary>
         /// Gets the bounding rectangle of a tile in world space.
-        /// </summary>        
+        /// </summary>
         public Rectangle GetBounds(int x, int y)
         {
             return new Rectangle(x * Tile.Width, y * Tile.Height, Tile.Width, Tile.Height);
@@ -372,9 +383,9 @@ namespace Platformer2D
         /// and handles the time limit with scoring.
         /// </summary>
         public void Update(
-            GameTime gameTime, 
-            KeyboardState keyboardState, 
-            GamePadState gamePadState, 
+            GameTime gameTime,
+            KeyboardState keyboardState,
+            GamePadState gamePadState,
             AccelerometerState accelState,
             DisplayOrientation orientation)
         {
@@ -427,7 +438,7 @@ namespace Platformer2D
         {
             for (int i = 0; i < gems.Count; ++i)
             {
-                Gem gem = gems[i];
+                Gem gem = (Gem)gems[i];
 
                 gem.Update(gameTime);
 
