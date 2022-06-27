@@ -1,7 +1,5 @@
 # Platformer 2D Sample
 
-![Platformer 2D Sample](../Images/Platformer2D-Sample.png)
-
 The Platformer Starter Kit is a near-complete, self-contained game solution that includes both game code and game assets. The game is a standard 2D platformer with levels, enemies, and collectable gems.
 
 This starter kit is intentionally incomplete. Several nonessential features and systems are not finished. This makes it easier and quicker to understand the structure of the game, and how the pieces fit together to provide a rich gaming experience. The Platformer Starter Kit includes the following features:
